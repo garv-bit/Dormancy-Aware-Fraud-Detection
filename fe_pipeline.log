@@ -1,0 +1,292 @@
+2026-02-19 19:34:38,045 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 19:34:38,045 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 19:34:38,045 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 19:34:38,045 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 19:34:38,046 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:34:50,945 - FE_Pipeline - INFO - Loaded: 5,000,000 rows x 18 cols
+2026-02-19 19:34:51,621 - FE_Pipeline - INFO - [LEAKAGE GUARD] Dropped on load: ['fraud_type']
+2026-02-19 19:34:51,622 - FE_Pipeline - INFO - Building temporal features...
+2026-02-19 19:34:53,808 - FE_Pipeline - INFO - Temporal features created: hour, day_of_week, month, is_weekend, is_high_risk_hour
+2026-02-19 19:34:53,808 - FE_Pipeline - INFO - Building dormancy features...
+2026-02-19 19:34:53,823 - FE_Pipeline - INFO - is_first_transaction: 896,513 accounts (17.93% of transactions)
+2026-02-19 19:34:53,986 - FE_Pipeline - INFO - Imputed time_since_last_transaction nulls with non-fraud median: 1.1480
+2026-02-19 19:34:54,602 - FE_Pipeline - INFO - Dormancy bucket distribution:
+dormancy_bucket
+nan             2051331
+long_dormant    1884104
+recent           910498
+dormant           84300
+moderate          69767
+Name: count, dtype: int64
+2026-02-19 19:34:54,603 - FE_Pipeline - INFO - Building IP frequency feature...
+2026-02-19 19:34:58,413 - FE_Pipeline - INFO - IP frequency range: 1 to 2
+2026-02-19 19:34:58,454 - FE_Pipeline - INFO - Building amount features...
+2026-02-19 19:34:58,562 - FE_Pipeline - INFO - amount_log: mean=4.7446, skew=-0.4062
+2026-02-19 19:34:58,562 - FE_Pipeline - INFO - Encoding categorical features...
+2026-02-19 19:34:59,189 - FE_Pipeline - INFO - Label encoded 'transaction_type': 4 classes
+2026-02-19 19:34:59,847 - FE_Pipeline - INFO - Label encoded 'merchant_category': 8 classes
+2026-02-19 19:35:00,496 - FE_Pipeline - INFO - Label encoded 'location': 8 classes
+2026-02-19 19:35:01,065 - FE_Pipeline - INFO - Label encoded 'device_used': 4 classes
+2026-02-19 19:35:01,677 - FE_Pipeline - INFO - Label encoded 'payment_channel': 4 classes
+2026-02-19 19:35:05,217 - FE_Pipeline - INFO - Frequency encoded 'sender_account': 896,513 unique values
+2026-02-19 19:35:08,785 - FE_Pipeline - INFO - Frequency encoded 'receiver_account': 896,639 unique values
+2026-02-19 19:35:16,651 - FE_Pipeline - INFO - Frequency encoded 'device_hash': 3,835,723 unique values
+2026-02-19 19:35:17,205 - FE_Pipeline - INFO - Building feature matrix...
+2026-02-19 19:35:17,513 - FE_Pipeline - INFO - Feature matrix: 5,000,000 rows x 28 features
+2026-02-19 19:35:17,513 - FE_Pipeline - INFO - Features: ['amount', 'transaction_type', 'merchant_category', 'location', 'device_used', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'payment_channel', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_high_risk_hour', 'is_first_transaction', 'dormancy_risk_score', 'ip_freq', 'amount_log', 'transaction_type_enc', 'merchant_category_enc', 'location_enc', 'device_used_enc', 'payment_channel_enc', 'sender_account_freq', 'receiver_account_freq', 'device_hash_freq', 'dormancy_bucket_enc']
+2026-02-19 19:35:17,519 - FE_Pipeline - INFO - Class balance: 179,553 fraud (3.59%)
+2026-02-19 19:35:17,519 - FE_Pipeline - INFO - Scaling numeric features with RobustScaler...
+2026-02-19 22:09:45,582 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 22:09:45,582 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:09:45,582 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 22:09:45,582 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:09:45,583 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 22:22:04,181 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 22:22:04,181 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:22:04,182 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 22:22:04,182 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:22:04,182 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 22:22:17,478 - FE_Pipeline - INFO - Loaded: 5,000,000 rows x 18 cols
+2026-02-19 22:22:18,281 - FE_Pipeline - INFO - [LEAKAGE GUARD] Dropped on load: ['fraud_type']
+2026-02-19 22:22:18,282 - FE_Pipeline - INFO - Building temporal features...
+2026-02-19 22:22:20,504 - FE_Pipeline - INFO - Temporal features created: hour, day_of_week, month, is_weekend, is_high_risk_hour
+2026-02-19 22:22:20,505 - FE_Pipeline - INFO - Building dormancy features...
+2026-02-19 22:22:20,520 - FE_Pipeline - INFO - is_first_transaction: 896,513 accounts (17.93% of transactions)
+2026-02-19 22:22:20,685 - FE_Pipeline - INFO - Imputed time_since_last_transaction nulls with non-fraud median: 1.1480
+2026-02-19 22:22:21,329 - FE_Pipeline - INFO - Dormancy bucket distribution:
+dormancy_bucket
+nan             2051331
+long_dormant    1884104
+recent           910498
+dormant           84300
+moderate          69767
+Name: count, dtype: int64
+2026-02-19 22:22:21,330 - FE_Pipeline - INFO - Building IP frequency feature...
+2026-02-19 22:22:25,393 - FE_Pipeline - INFO - IP frequency range: 1 to 2
+2026-02-19 22:22:25,435 - FE_Pipeline - INFO - Building amount features...
+2026-02-19 22:22:25,541 - FE_Pipeline - INFO - amount_log: mean=4.7446, skew=-0.4062
+2026-02-19 22:22:25,542 - FE_Pipeline - INFO - Encoding categorical features...
+2026-02-19 22:22:26,179 - FE_Pipeline - INFO - Label encoded 'transaction_type': 4 classes
+2026-02-19 22:22:26,882 - FE_Pipeline - INFO - Label encoded 'merchant_category': 8 classes
+2026-02-19 22:22:27,582 - FE_Pipeline - INFO - Label encoded 'location': 8 classes
+2026-02-19 22:22:28,256 - FE_Pipeline - INFO - Label encoded 'device_used': 4 classes
+2026-02-19 22:22:28,884 - FE_Pipeline - INFO - Label encoded 'payment_channel': 4 classes
+2026-02-19 22:22:32,898 - FE_Pipeline - INFO - Frequency encoded 'sender_account': 896,513 unique values
+2026-02-19 22:22:36,735 - FE_Pipeline - INFO - Frequency encoded 'receiver_account': 896,639 unique values
+2026-02-19 22:29:48,700 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 22:29:48,700 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:29:48,700 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 22:29:48,701 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:29:48,701 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 22:30:07,721 - FE_Pipeline - INFO - Loaded: 5,000,000 rows x 18 cols
+2026-02-19 22:30:08,272 - FE_Pipeline - INFO - [LEAKAGE GUARD] Dropped on load: ['fraud_type']
+2026-02-19 22:30:08,272 - FE_Pipeline - INFO - Building temporal features...
+2026-02-19 22:30:10,298 - FE_Pipeline - INFO - Temporal features created: hour, day_of_week, month, is_weekend, is_high_risk_hour
+2026-02-19 22:30:10,298 - FE_Pipeline - INFO - Building dormancy features...
+2026-02-19 22:30:10,318 - FE_Pipeline - INFO - is_first_transaction: 896,513 accounts (17.93% of transactions)
+2026-02-19 22:30:10,451 - FE_Pipeline - INFO - Imputed time_since_last_transaction nulls with non-fraud median: 1.1480
+2026-02-19 22:30:11,080 - FE_Pipeline - INFO - Dormancy bucket distribution:
+dormancy_bucket
+nan             2051331
+long_dormant    1884104
+recent           910498
+dormant           84300
+moderate          69767
+Name: count, dtype: int64
+2026-02-19 22:30:11,081 - FE_Pipeline - INFO - Building IP frequency feature...
+2026-02-19 22:30:16,990 - FE_Pipeline - INFO - IP frequency range: 1 to 2
+2026-02-19 22:30:17,033 - FE_Pipeline - INFO - Building amount features...
+2026-02-19 22:30:17,108 - FE_Pipeline - INFO - amount_log: mean=4.7446, skew=-0.4062
+2026-02-19 22:30:17,108 - FE_Pipeline - INFO - Encoding categorical features...
+2026-02-19 22:30:18,266 - FE_Pipeline - INFO - Label encoded 'transaction_type': 4 classes
+2026-02-19 22:30:19,516 - FE_Pipeline - INFO - Label encoded 'merchant_category': 8 classes
+2026-02-19 22:30:20,660 - FE_Pipeline - INFO - Label encoded 'location': 8 classes
+2026-02-19 22:30:21,636 - FE_Pipeline - INFO - Label encoded 'device_used': 4 classes
+2026-02-19 22:30:22,876 - FE_Pipeline - INFO - Label encoded 'payment_channel': 4 classes
+2026-02-19 22:30:27,182 - FE_Pipeline - INFO - Frequency encoded 'sender_account': 896,513 unique values
+2026-02-19 22:30:31,169 - FE_Pipeline - INFO - Frequency encoded 'receiver_account': 896,639 unique values
+2026-02-19 22:30:42,243 - FE_Pipeline - INFO - Frequency encoded 'device_hash': 3,835,723 unique values
+2026-02-19 22:30:42,783 - FE_Pipeline - INFO - Building feature matrix...
+2026-02-19 22:30:42,977 - FE_Pipeline - INFO - Feature matrix: 5,000,000 rows x 29 features
+2026-02-19 22:30:42,978 - FE_Pipeline - INFO - Features: ['timestamp', 'amount', 'transaction_type', 'merchant_category', 'location', 'device_used', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'payment_channel', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_high_risk_hour', 'is_first_transaction', 'dormancy_risk_score', 'ip_freq', 'amount_log', 'transaction_type_enc', 'merchant_category_enc', 'location_enc', 'device_used_enc', 'payment_channel_enc', 'sender_account_freq', 'receiver_account_freq', 'device_hash_freq', 'dormancy_bucket_enc']
+2026-02-19 22:30:42,983 - FE_Pipeline - INFO - Class balance: 179,553 fraud (3.59%)
+2026-02-19 22:30:42,983 - FE_Pipeline - INFO - Scaling numeric features with RobustScaler...
+2026-02-19 22:30:44,406 - FE_Pipeline - INFO - Scaled columns: ['amount', 'amount_log', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'ip_freq']
+2026-02-19 22:30:44,423 - FE_Pipeline - INFO - Performing time-based train/test split...
+2026-02-19 22:30:46,714 - FE_Pipeline - INFO - Train: 4,000,000 rows (143,527 fraud, 3.59%)
+2026-02-19 22:30:46,716 - FE_Pipeline - INFO - Test:  1,000,000 rows  (36,026 fraud, 3.60%)
+2026-02-19 22:30:46,718 - FE_Pipeline - INFO - Saving outputs...
+2026-02-19 22:31:10,594 - FE_Pipeline - INFO - X_train saved : features/X_train.parquet
+2026-02-19 22:31:10,594 - FE_Pipeline - INFO - X_test  saved : features/X_test.parquet
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - y_train saved : features/y_train.parquet
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - y_test  saved : features/y_test.parquet
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - Encoders saved: features/encoders.joblib
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - Scaler  saved : features/scaler.joblib
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — COMPLETE
+2026-02-19 22:31:10,595 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:10:11,414 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 23:10:11,414 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:10:11,414 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 23:10:11,414 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:10:11,415 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 23:10:32,986 - FE_Pipeline - INFO - Loaded: 5,000,000 rows x 18 cols
+2026-02-19 23:10:33,539 - FE_Pipeline - INFO - [LEAKAGE GUARD] Dropped on load: ['fraud_type']
+2026-02-19 23:10:33,540 - FE_Pipeline - INFO - Building temporal features...
+2026-02-19 23:10:35,780 - FE_Pipeline - INFO - Temporal features created: hour, day_of_week, month, is_weekend, is_high_risk_hour
+2026-02-19 23:10:35,780 - FE_Pipeline - INFO - Building dormancy features...
+2026-02-19 23:10:35,798 - FE_Pipeline - INFO - is_first_transaction: 896,513 accounts (17.93% of transactions)
+2026-02-19 23:10:35,936 - FE_Pipeline - INFO - Imputed time_since_last_transaction nulls with non-fraud median: 1.1480
+2026-02-19 23:10:36,596 - FE_Pipeline - INFO - Dormancy bucket distribution:
+dormancy_bucket
+nan             2051331
+long_dormant    1884104
+recent           910498
+dormant           84300
+moderate          69767
+Name: count, dtype: int64
+2026-02-19 23:10:36,596 - FE_Pipeline - INFO - Building IP frequency feature...
+2026-02-19 23:10:42,820 - FE_Pipeline - INFO - IP frequency range: 1 to 2
+2026-02-19 23:10:42,865 - FE_Pipeline - INFO - Building amount features...
+2026-02-19 23:10:42,951 - FE_Pipeline - INFO - amount_log: mean=4.7446, skew=-0.4062
+2026-02-19 23:10:42,952 - FE_Pipeline - INFO - Encoding categorical features...
+2026-02-19 23:10:44,352 - FE_Pipeline - INFO - Label encoded 'transaction_type': 4 classes
+2026-02-19 23:10:45,780 - FE_Pipeline - INFO - Label encoded 'merchant_category': 8 classes
+2026-02-19 23:10:47,085 - FE_Pipeline - INFO - Label encoded 'location': 8 classes
+2026-02-19 23:10:48,200 - FE_Pipeline - INFO - Label encoded 'device_used': 4 classes
+2026-02-19 23:10:49,519 - FE_Pipeline - INFO - Label encoded 'payment_channel': 4 classes
+2026-02-19 23:10:53,754 - FE_Pipeline - INFO - Frequency encoded 'sender_account': 896,513 unique values
+2026-02-19 23:10:58,207 - FE_Pipeline - INFO - Frequency encoded 'receiver_account': 896,639 unique values
+2026-02-19 23:11:09,568 - FE_Pipeline - INFO - Frequency encoded 'device_hash': 3,835,723 unique values
+2026-02-19 23:11:10,166 - FE_Pipeline - INFO - Building feature matrix...
+2026-02-19 23:11:10,352 - FE_Pipeline - INFO - Feature matrix: 5,000,000 rows x 28 features
+2026-02-19 23:11:10,353 - FE_Pipeline - INFO - Features: ['amount', 'transaction_type', 'merchant_category', 'location', 'device_used', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'payment_channel', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_high_risk_hour', 'is_first_transaction', 'dormancy_risk_score', 'ip_freq', 'amount_log', 'transaction_type_enc', 'merchant_category_enc', 'location_enc', 'device_used_enc', 'payment_channel_enc', 'sender_account_freq', 'receiver_account_freq', 'device_hash_freq', 'dormancy_bucket_enc']
+2026-02-19 23:11:10,357 - FE_Pipeline - INFO - Class balance: 179,553 fraud (3.59%)
+2026-02-19 23:11:10,358 - FE_Pipeline - INFO - Scaling numeric features with RobustScaler...
+2026-02-19 23:11:11,817 - FE_Pipeline - INFO - Scaled columns: ['amount', 'amount_log', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'ip_freq']
+2026-02-19 23:11:11,833 - FE_Pipeline - INFO - Performing time-based train/test split...
+2026-02-19 23:11:14,062 - FE_Pipeline - INFO - Train: 4,000,000 rows (143,527 fraud, 3.59%)
+2026-02-19 23:11:14,065 - FE_Pipeline - INFO - Test:  1,000,000 rows  (36,026 fraud, 3.60%)
+2026-02-19 23:11:14,067 - FE_Pipeline - INFO - Saving outputs...
+2026-02-19 23:11:29,909 - FE_Pipeline - INFO - X_train saved : features/X_train.parquet
+2026-02-19 23:11:29,909 - FE_Pipeline - INFO - X_test  saved : features/X_test.parquet
+2026-02-19 23:11:29,909 - FE_Pipeline - INFO - y_train saved : features/y_train.parquet
+2026-02-19 23:11:29,909 - FE_Pipeline - INFO - y_test  saved : features/y_test.parquet
+2026-02-19 23:11:29,910 - FE_Pipeline - INFO - Encoders saved: features/encoders.joblib
+2026-02-19 23:11:29,910 - FE_Pipeline - INFO - Scaler  saved : features/scaler.joblib
+2026-02-19 23:11:29,910 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:11:29,910 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — COMPLETE
+2026-02-19 23:11:29,910 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:16:25,932 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 23:16:25,932 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:16:25,932 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 23:16:25,932 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:16:25,932 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 23:16:39,186 - FE_Pipeline - INFO - Loaded: 5,000,000 rows x 18 cols
+2026-02-19 23:16:39,842 - FE_Pipeline - INFO - [LEAKAGE GUARD] Dropped on load: ['fraud_type']
+2026-02-19 23:16:39,842 - FE_Pipeline - INFO - Building temporal features...
+2026-02-19 23:16:41,960 - FE_Pipeline - INFO - Temporal features created: hour, day_of_week, month, is_weekend, is_high_risk_hour
+2026-02-19 23:16:41,960 - FE_Pipeline - INFO - Building dormancy features...
+2026-02-19 23:16:41,974 - FE_Pipeline - INFO - is_first_transaction: 896,513 accounts (17.93% of transactions)
+2026-02-19 23:16:42,127 - FE_Pipeline - INFO - Imputed time_since_last_transaction nulls with non-fraud median: 1.1480
+2026-02-19 23:16:42,291 - FE_Pipeline - INFO - time_since_last_transaction percentiles — p25=-1920.2746, p50=1.1480, p75=1923.7958
+2026-02-19 23:16:43,560 - FE_Pipeline - INFO - Dormancy bucket distribution:
+dormancy_bucket
+moderate        1698382
+recent          1250000
+long_dormant    1250000
+dormant          801618
+Name: count, dtype: int64
+2026-02-19 23:16:43,560 - FE_Pipeline - INFO - Building IP frequency feature...
+2026-02-19 23:16:47,745 - FE_Pipeline - INFO - IP frequency range: 1 to 2
+2026-02-19 23:16:47,787 - FE_Pipeline - INFO - Building amount features...
+2026-02-19 23:16:47,909 - FE_Pipeline - INFO - amount_log: mean=4.7446, skew=-0.4062
+2026-02-19 23:16:47,909 - FE_Pipeline - INFO - Encoding categorical features...
+2026-02-19 23:16:48,589 - FE_Pipeline - INFO - Label encoded 'transaction_type': 4 classes
+2026-02-19 23:16:49,278 - FE_Pipeline - INFO - Label encoded 'merchant_category': 8 classes
+2026-02-19 23:16:49,978 - FE_Pipeline - INFO - Label encoded 'location': 8 classes
+2026-02-19 23:16:50,612 - FE_Pipeline - INFO - Label encoded 'device_used': 4 classes
+2026-02-19 23:16:51,264 - FE_Pipeline - INFO - Label encoded 'payment_channel': 4 classes
+2026-02-19 23:16:55,134 - FE_Pipeline - INFO - Frequency encoded 'sender_account': 896,513 unique values
+2026-02-19 23:16:58,950 - FE_Pipeline - INFO - Frequency encoded 'receiver_account': 896,639 unique values
+2026-02-19 23:17:06,995 - FE_Pipeline - INFO - Frequency encoded 'device_hash': 3,835,723 unique values
+2026-02-19 23:17:07,748 - FE_Pipeline - INFO - Building feature matrix...
+2026-02-19 23:17:08,110 - FE_Pipeline - INFO - Feature matrix: 5,000,000 rows x 28 features
+2026-02-19 23:17:08,110 - FE_Pipeline - INFO - Features: ['amount', 'transaction_type', 'merchant_category', 'location', 'device_used', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'payment_channel', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_high_risk_hour', 'is_first_transaction', 'dormancy_risk_score', 'ip_freq', 'amount_log', 'transaction_type_enc', 'merchant_category_enc', 'location_enc', 'device_used_enc', 'payment_channel_enc', 'sender_account_freq', 'receiver_account_freq', 'device_hash_freq', 'dormancy_bucket_enc']
+2026-02-19 23:17:08,117 - FE_Pipeline - INFO - Class balance: 179,553 fraud (3.59%)
+2026-02-19 23:17:08,117 - FE_Pipeline - INFO - Scaling numeric features with RobustScaler...
+2026-02-19 23:17:09,697 - FE_Pipeline - INFO - Scaled columns: ['amount', 'amount_log', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'ip_freq']
+2026-02-19 23:17:09,697 - FE_Pipeline - INFO - Performing time-based train/test split...
+2026-02-19 23:17:13,486 - FE_Pipeline - INFO - Train: 4,000,000 rows (143,527 fraud, 3.59%)
+2026-02-19 23:17:13,488 - FE_Pipeline - INFO - Test:  1,000,000 rows  (36,026 fraud, 3.60%)
+2026-02-19 23:17:13,490 - FE_Pipeline - INFO - Saving outputs...
+2026-02-19 23:17:33,516 - FE_Pipeline - INFO - X_train saved : features/X_train.parquet
+2026-02-19 23:17:33,517 - FE_Pipeline - INFO - X_test  saved : features/X_test.parquet
+2026-02-19 23:17:33,517 - FE_Pipeline - INFO - y_train saved : features/y_train.parquet
+2026-02-19 23:17:33,517 - FE_Pipeline - INFO - y_test  saved : features/y_test.parquet
+2026-02-19 23:17:33,518 - FE_Pipeline - INFO - Encoders saved: features/encoders.joblib
+2026-02-19 23:17:33,518 - FE_Pipeline - INFO - Scaler  saved : features/scaler.joblib
+2026-02-19 23:17:33,518 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:17:33,518 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — COMPLETE
+2026-02-19 23:17:33,518 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:26:17,987 - FE_Pipeline - INFO - FeatureEngineeringPipeline initialised
+2026-02-19 23:26:17,988 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:26:17,988 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — START
+2026-02-19 23:26:17,988 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:26:17,988 - FE_Pipeline - INFO - Loading: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 23:26:31,590 - FE_Pipeline - INFO - Loaded: 5,000,000 rows x 18 cols
+2026-02-19 23:26:32,309 - FE_Pipeline - INFO - [LEAKAGE GUARD] Dropped on load: ['fraud_type']
+2026-02-19 23:26:32,309 - FE_Pipeline - INFO - Building temporal features...
+2026-02-19 23:26:34,504 - FE_Pipeline - INFO - Temporal features: hour, day_of_week, month, is_weekend, is_high_risk_hour
+2026-02-19 23:26:34,521 - FE_Pipeline - INFO - is_first_transaction: 896,513 (17.93% of transactions)
+2026-02-19 23:26:34,522 - FE_Pipeline - INFO - Performing time-based split on raw data...
+2026-02-19 23:26:40,455 - FE_Pipeline - INFO - Train: 4,000,000 rows | 143,527 fraud (3.59%)
+2026-02-19 23:26:40,457 - FE_Pipeline - INFO - Test:  1,000,000 rows  | 36,026 fraud (3.60%)
+2026-02-19 23:26:40,967 - FE_Pipeline - INFO - [TRAIN] Imputation median (non-fraud): -875.5130
+2026-02-19 23:26:41,140 - FE_Pipeline - INFO - [TRAIN] Dormancy percentiles — p25=-3217.7265, p50=-875.2994, p75=1467.0533
+2026-02-19 23:26:43,958 - FE_Pipeline - INFO - [TRAIN] Frequency map 'sender_account': 889,570 unique values
+2026-02-19 23:26:46,780 - FE_Pipeline - INFO - [TRAIN] Frequency map 'receiver_account': 889,720 unique values
+2026-02-19 23:26:52,473 - FE_Pipeline - INFO - [TRAIN] Frequency map 'device_hash': 3,228,655 unique values
+2026-02-19 23:26:58,970 - FE_Pipeline - INFO - [TRAIN] Frequency map 'ip_address': 3,998,124 unique values
+2026-02-19 23:26:59,129 - FE_Pipeline - INFO - [TRAIN] LabelEncoder 'transaction_type': 4 classes
+2026-02-19 23:26:59,280 - FE_Pipeline - INFO - [TRAIN] LabelEncoder 'merchant_category': 8 classes
+2026-02-19 23:26:59,423 - FE_Pipeline - INFO - [TRAIN] LabelEncoder 'location': 8 classes
+2026-02-19 23:26:59,547 - FE_Pipeline - INFO - [TRAIN] LabelEncoder 'device_used': 4 classes
+2026-02-19 23:26:59,680 - FE_Pipeline - INFO - [TRAIN] LabelEncoder 'payment_channel': 4 classes
+2026-02-19 23:27:00,702 - FE_Pipeline - INFO - [TRAIN] Dormancy bucket distribution:
+dormancy_bucket
+moderate        1538558
+recent           820481
+long_dormant     820481
+dormant          820480
+Name: count, dtype: int64
+2026-02-19 23:27:02,110 - FE_Pipeline - INFO - [TRAIN] 'sender_account' → 'sender_account_freq' range: 1 to 18
+2026-02-19 23:27:03,541 - FE_Pipeline - INFO - [TRAIN] 'receiver_account' → 'receiver_account_freq' range: 1 to 19
+2026-02-19 23:27:06,701 - FE_Pipeline - INFO - [TRAIN] 'device_hash' → 'device_hash_freq' range: 1 to 7
+2026-02-19 23:27:10,226 - FE_Pipeline - INFO - [TRAIN] 'ip_address' → 'ip_freq' range: 1 to 2
+2026-02-19 23:27:15,433 - FE_Pipeline - INFO - [TEST] Dormancy bucket distribution:
+dormancy_bucket
+long_dormant    602319
+moderate        198980
+dormant         198701
+Name: count, dtype: int64
+2026-02-19 23:27:16,246 - FE_Pipeline - INFO - [TEST] 'sender_account' → 'sender_account_freq' range: 1 to 18
+2026-02-19 23:27:17,067 - FE_Pipeline - INFO - [TEST] 'receiver_account' → 'receiver_account_freq' range: 1 to 19
+2026-02-19 23:27:19,760 - FE_Pipeline - INFO - [TEST] 'device_hash' → 'device_hash_freq' range: 1 to 7
+2026-02-19 23:27:22,828 - FE_Pipeline - INFO - [TEST] 'ip_address' → 'ip_freq' range: 1 to 1
+2026-02-19 23:27:24,335 - FE_Pipeline - INFO - X_train: (4000000, 23) | fraud: 143,527 (3.59%)
+2026-02-19 23:27:24,337 - FE_Pipeline - INFO - X_test:  (1000000, 23)  | fraud: 36,026  (3.60%)
+2026-02-19 23:27:24,337 - FE_Pipeline - INFO - Features: ['amount', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'hour', 'day_of_week', 'month', 'is_weekend', 'is_high_risk_hour', 'is_first_transaction', 'dormancy_risk_score', 'sender_account_freq', 'receiver_account_freq', 'device_hash_freq', 'ip_freq', 'amount_log', 'transaction_type_enc', 'merchant_category_enc', 'location_enc', 'device_used_enc', 'payment_channel_enc', 'dormancy_bucket_enc']
+2026-02-19 23:27:25,261 - FE_Pipeline - INFO - [TRAIN] RobustScaler fit on: ['amount', 'amount_log', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'ip_freq']
+2026-02-19 23:27:25,623 - FE_Pipeline - INFO - [TRAIN] Scaled: ['amount', 'amount_log', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'ip_freq']
+2026-02-19 23:27:25,712 - FE_Pipeline - INFO - [TEST] Scaled: ['amount', 'amount_log', 'time_since_last_transaction', 'spending_deviation_score', 'velocity_score', 'geo_anomaly_score', 'ip_freq']
+2026-02-19 23:27:25,713 - FE_Pipeline - INFO - Saving outputs...
+2026-02-19 23:27:53,825 - FE_Pipeline - INFO - X_train → features/X_train.parquet
+2026-02-19 23:27:53,825 - FE_Pipeline - INFO - X_test  → features/X_test.parquet
+2026-02-19 23:27:53,825 - FE_Pipeline - INFO - y_train → features/y_train.parquet
+2026-02-19 23:27:53,825 - FE_Pipeline - INFO - y_test  → features/y_test.parquet
+2026-02-19 23:27:53,825 - FE_Pipeline - INFO - Encoders → features/encoders.joblib
+2026-02-19 23:27:53,826 - FE_Pipeline - INFO - Scaler  → features/scaler.joblib
+2026-02-19 23:27:53,826 - FE_Pipeline - INFO - ================================================================================
+2026-02-19 23:27:53,826 - FE_Pipeline - INFO - FEATURE ENGINEERING PIPELINE — COMPLETE
+2026-02-19 23:27:53,826 - FE_Pipeline - INFO - ================================================================================

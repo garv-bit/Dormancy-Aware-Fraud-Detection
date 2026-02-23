@@ -1,0 +1,179 @@
+
+====================================================================================================
+DORMANCY FRAUD DETECTION - EDA RESULTS SUMMARY
+====================================================================================================
+
+DATASET OVERVIEW
+----------------------------------------------------------------------------------------------------
+[DATA] Size: 5,000,000 transactions
+[INFO] Features: 18 columns
+[DISK] Memory: 3423.88 MB (718.04 bytes/row)
+[TIME] Analysis Date: 2026-02-12T18:31:50.985388
+
+DATA QUALITY ASSESSMENT
+----------------------------------------------------------------------------------------------------
+[PASS] Overall Quality Score: 24.36%
+   - Completeness: 93.65%
+   - Uniqueness: 100.00%
+   - Consistency: 100.00%
+   - Validity: 100.00%
+
+[WARN] Missing Data:
+   - Total Missing: 5,716,960 cells
+   - fraud_type: 4,820,447 (96.4%)
+   - time_since_last_transaction: 896,513 (17.9%)
+
+[INFO] Duplicates: 0 (0.00%)
+
+FRAUD STATISTICS
+----------------------------------------------------------------------------------------------------
+
+[STAT] Fraud Detection Rate: 3.59106%
+[EVAL] Model Readiness: READY
+
+Readiness Checklist:
+   - Completeness: PASS
+   - Sample Size: PASS (5,000,000 samples)
+   - Class Balance: PASS
+   - Feature Count: PASS (22 features)
+
+COLUMN ANALYSIS
+----------------------------------------------------------------------------------------------------
+
+transaction_id:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 5,000,000 (100.00%)
+
+timestamp:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 4,999,998 (100.00%)
+
+sender_account:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 896,513 (17.93%)
+
+receiver_account:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 896,639 (17.93%)
+
+amount:
+   Type: float64
+   Non-null: 5,000,000 (100.00%)
+   Unique: 217,069 (4.34%)
+
+transaction_type:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 4 (0.00%)
+
+merchant_category:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 8 (0.00%)
+
+location:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 8 (0.00%)
+
+device_used:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 4 (0.00%)
+
+is_fraud:
+   Type: bool
+   Non-null: 5,000,000 (100.00%)
+   Unique: 2 (0.00%)
+
+fraud_type:
+   Type: object
+   Non-null: 179,553 (3.59%)
+   Unique: 1 (0.00%) [WARN] Missing: 96.4%
+
+time_since_last_transaction:
+   Type: float64
+   Non-null: 4,103,487 (82.07%)
+   Unique: 4,103,487 (82.07%) [WARN] Missing: 17.9%
+
+spending_deviation_score:
+   Type: float64
+   Non-null: 5,000,000 (100.00%)
+   Unique: 917 (0.02%)
+
+velocity_score:
+   Type: int64
+   Non-null: 5,000,000 (100.00%)
+   Unique: 20 (0.00%)
+
+geo_anomaly_score:
+   Type: float64
+   Non-null: 5,000,000 (100.00%)
+   Unique: 101 (0.00%)
+
+payment_channel:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 4 (0.00%)
+
+ip_address:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 4,997,068 (99.94%)
+
+device_hash:
+   Type: object
+   Non-null: 5,000,000 (100.00%)
+   Unique: 3,835,723 (76.71%)
+
+TEMPORAL PATTERNS
+----------------------------------------------------------------------------------------------------
+[DATE] Time Range: 365 days
+   From: 2023-01-01 00:09:26.241974
+   To: 2024-01-01 22:58:30.131850
+
+[TIME] Activity Patterns:
+   - Peak Hour: 5:00
+   - Peak Day: Sunday
+   - Peak Month: August
+   - Weekend Activity: 28.6%
+
+RECOMMENDATIONS & ACTION ITEMS
+----------------------------------------------------------------------------------------------------
+
+1. [!] [MEDIUM] Feature Engineering
+   Issue: Additional features could improve model performance
+   Action: Create interaction features, ratios, temporal aggregations, and behavioral features
+
+2. [!] [MEDIUM] Model Selection
+   Issue: Dataset has temporal dependencies
+   Action: Use time-aware cross-validation (TimeSeriesSplit) and consider sequential models
+
+FEATURE IMPORTANCE
+----------------------------------------------------------------------------------------------------
+Model Type: Supervised
+
+Top 10 Features (Random Forest):
+   1. fraud_type_enc: 0.5321
+   2. is_fraud_enc: 0.4664
+   3. time_since_last_transaction: 0.0013
+   4. quarter: 0.0000
+   5. month: 0.0000
+   6. receiver_account_enc: 0.0000
+   7. device_hash_enc: 0.0000
+   8. sender_account_enc: 0.0000
+   9. spending_deviation_score: 0.0000
+   10. amount: 0.0000
+
+DIMENSIONALITY REDUCTION (PCA)
+----------------------------------------------------------------------------------------------------
+[PCA] Components for 95% variance: 8/9
+[STAT] Reduction potential: 11.1%
+
+====================================================================================================
+END OF SUMMARY
+====================================================================================================

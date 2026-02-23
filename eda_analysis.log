@@ -1,0 +1,144 @@
+2026-02-19 18:55:10,127 - FraudEDA - INFO - FraudEDA pipeline initialized
+2026-02-19 18:55:10,127 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 18:55:10,128 - FraudEDA - INFO - STARTING COMPREHENSIVE EDA PIPELINE
+2026-02-19 18:55:10,128 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 18:55:10,128 - FraudEDA - INFO - File found: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 18:55:10,128 - FraudEDA - INFO - Loading data from: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 18:55:24,915 - FraudEDA - INFO - DataFrame validated: 5,000,000 rows × 18 cols
+2026-02-19 18:55:25,698 - FraudEDA - INFO - [LEAKAGE GUARD] Dropped post-event columns on load: ['fraud_type']
+2026-02-19 18:55:25,698 - FraudEDA - INFO - Data loaded: 5,000,000 rows × 17 cols
+2026-02-19 18:55:25,699 - FraudEDA - INFO - 1. DATASET METADATA & PROFILING
+2026-02-19 18:56:05,363 - FraudEDA - INFO - Metadata analysis complete
+2026-02-19 18:56:05,363 - FraudEDA - INFO - 2. DATA QUALITY ASSESSMENT
+2026-02-19 18:56:19,177 - FraudEDA - INFO - Data quality — Overall: 99.58%
+2026-02-19 19:02:25,788 - FraudEDA - INFO - FraudEDA pipeline initialized
+2026-02-19 19:02:25,788 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:02:25,789 - FraudEDA - INFO - STARTING COMPREHENSIVE EDA PIPELINE
+2026-02-19 19:02:25,792 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:02:25,793 - FraudEDA - INFO - File found: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:02:25,793 - FraudEDA - INFO - Loading data from: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:02:54,525 - FraudEDA - INFO - DataFrame validated: 5,000,000 rows × 18 cols
+2026-02-19 19:02:55,308 - FraudEDA - INFO - [LEAKAGE GUARD] Dropped post-event columns on load: ['fraud_type']
+2026-02-19 19:02:55,309 - FraudEDA - INFO - Data loaded: 5,000,000 rows × 17 cols
+2026-02-19 19:02:55,309 - FraudEDA - INFO - 1. DATASET METADATA & PROFILING
+2026-02-19 19:02:55,327 - FraudEDA - INFO - [CHECKPOINT] Loaded 'metadata' from eda_checkpoints\metadata.joblib
+2026-02-19 19:02:55,328 - FraudEDA - INFO - 2. DATA QUALITY ASSESSMENT
+2026-02-19 19:03:09,352 - FraudEDA - INFO - Data quality — Overall: 99.58%
+2026-02-19 19:03:22,595 - FraudEDA - WARNING - [SOFT LEAK RISK] time_since_last_transaction null rate differs by 18.6pp between classes.
+2026-02-19 19:03:22,597 - FraudEDA - INFO - [CHECKPOINT] Saved 'data_quality' -> eda_checkpoints\data_quality.joblib
+2026-02-19 19:03:22,597 - FraudEDA - INFO - Data quality assessment complete
+2026-02-19 19:03:22,597 - FraudEDA - INFO - 3. NUMERICAL FEATURES ANALYSIS
+2026-02-19 19:03:27,076 - FraudEDA - INFO - [CHECKPOINT] Saved 'numerical_analysis' -> eda_checkpoints\numerical_analysis.joblib
+2026-02-19 19:03:27,076 - FraudEDA - INFO - Numerical analysis complete for 5 features
+2026-02-19 19:03:27,079 - FraudEDA - INFO - 4. CATEGORICAL FEATURES ANALYSIS
+2026-02-19 19:03:43,397 - FraudEDA - INFO - [CHECKPOINT] Saved 'categorical_analysis' -> eda_checkpoints\categorical_analysis.joblib
+2026-02-19 19:03:43,397 - FraudEDA - INFO - Categorical analysis complete for 9 features
+2026-02-19 19:03:43,443 - FraudEDA - INFO - 5. TEMPORAL ANALYSIS
+2026-02-19 19:03:48,590 - FraudEDA - INFO - [CHECKPOINT] Saved 'temporal_analysis' -> eda_checkpoints\temporal_analysis.joblib
+2026-02-19 19:03:48,591 - FraudEDA - INFO - Temporal analysis complete
+2026-02-19 19:03:48,591 - FraudEDA - INFO - 6. CORRELATION & MULTICOLLINEARITY ANALYSIS
+2026-02-19 19:04:07,812 - FraudEDA - INFO - [CHECKPOINT] Saved 'correlation_analysis' -> eda_checkpoints\correlation_analysis.joblib
+2026-02-19 19:04:07,812 - FraudEDA - INFO - Correlation analysis complete, found 3 strong correlations
+2026-02-19 19:04:07,812 - FraudEDA - INFO - 7. FEATURE IMPORTANCE ANALYSIS
+2026-02-19 19:04:09,508 - FraudEDA - INFO - [SAMPLE] Using 200,000 / 5,000,000 rows for ML steps
+2026-02-19 19:04:12,330 - FraudEDA - INFO - [LEAKAGE GUARD] Skipping encoding of 'is_fraud'
+2026-02-19 19:04:13,001 - FraudEDA - INFO - Training Random Forest for feature importance...
+2026-02-19 19:04:19,760 - FraudEDA - INFO - Training Gradient Boosting for feature importance...
+2026-02-19 19:05:10,717 - FraudEDA - INFO - Calculating mutual information...
+2026-02-19 19:05:21,005 - FraudEDA - INFO - [CHECKPOINT] Saved 'feature_importance' -> eda_checkpoints\feature_importance.joblib
+2026-02-19 19:05:21,006 - FraudEDA - INFO - Feature importance analysis complete
+2026-02-19 19:05:21,110 - FraudEDA - INFO - 8. DIMENSIONALITY REDUCTION (PCA)
+2026-02-19 19:05:22,835 - FraudEDA - INFO - [CHECKPOINT] Saved 'pca_analysis' -> eda_checkpoints\pca_analysis.joblib
+2026-02-19 19:05:22,835 - FraudEDA - INFO - PCA analysis complete
+2026-02-19 19:05:22,872 - FraudEDA - INFO - 9. CLUSTERING ANALYSIS
+2026-02-19 19:05:24,392 - FraudEDA - INFO - [SAMPLE] Using 200,000 / 5,000,000 rows for ML steps
+2026-02-19 19:05:24,447 - FraudEDA - INFO - K-means on 200,000 rows, k=2…10
+2026-02-19 19:05:25,862 - FraudEDA - WARNING - Silhouette score failed for k=2: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:27,107 - FraudEDA - WARNING - Silhouette score failed for k=3: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:28,666 - FraudEDA - WARNING - Silhouette score failed for k=4: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:30,350 - FraudEDA - WARNING - Silhouette score failed for k=5: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:32,378 - FraudEDA - WARNING - Silhouette score failed for k=6: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:34,730 - FraudEDA - WARNING - Silhouette score failed for k=7: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:37,335 - FraudEDA - WARNING - Silhouette score failed for k=8: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:40,793 - FraudEDA - WARNING - Silhouette score failed for k=9: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:44,445 - FraudEDA - WARNING - Silhouette score failed for k=10: Unable to allocate 763. MiB for an array with shape (10000, 10000) and data type float64
+2026-02-19 19:05:44,836 - FraudEDA - INFO - [CHECKPOINT] Saved 'clustering_analysis' -> eda_checkpoints\clustering_analysis.joblib
+2026-02-19 19:05:44,836 - FraudEDA - INFO - Clustering analysis complete
+2026-02-19 19:05:44,950 - FraudEDA - INFO - 10. STATISTICAL HYPOTHESIS TESTS
+2026-02-19 19:13:53,543 - FraudEDA - INFO - FraudEDA pipeline initialized
+2026-02-19 19:13:53,544 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:13:53,544 - FraudEDA - INFO - STARTING COMPREHENSIVE EDA PIPELINE
+2026-02-19 19:13:53,544 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:13:53,544 - FraudEDA - INFO - File found: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:13:53,544 - FraudEDA - INFO - Loading data from: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:14:09,535 - FraudEDA - INFO - DataFrame validated: 5,000,000 rows × 18 cols
+2026-02-19 19:14:10,442 - FraudEDA - INFO - [LEAKAGE GUARD] Dropped post-event columns on load: ['fraud_type']
+2026-02-19 19:14:10,443 - FraudEDA - INFO - Data loaded: 5,000,000 rows × 17 cols
+2026-02-19 19:14:10,443 - FraudEDA - INFO - 1. DATASET METADATA & PROFILING
+2026-02-19 19:14:10,447 - FraudEDA - INFO - [CHECKPOINT] Loaded 'metadata' from eda_checkpoints\metadata.joblib
+2026-02-19 19:14:10,448 - FraudEDA - INFO - 2. DATA QUALITY ASSESSMENT
+2026-02-19 19:14:10,479 - FraudEDA - INFO - [CHECKPOINT] Loaded 'data_quality' from eda_checkpoints\data_quality.joblib
+2026-02-19 19:14:10,480 - FraudEDA - INFO - 3. NUMERICAL FEATURES ANALYSIS
+2026-02-19 19:14:10,494 - FraudEDA - INFO - [CHECKPOINT] Loaded 'numerical_analysis' from eda_checkpoints\numerical_analysis.joblib
+2026-02-19 19:14:10,494 - FraudEDA - INFO - 4. CATEGORICAL FEATURES ANALYSIS
+2026-02-19 19:14:10,518 - FraudEDA - INFO - [CHECKPOINT] Loaded 'categorical_analysis' from eda_checkpoints\categorical_analysis.joblib
+2026-02-19 19:14:10,521 - FraudEDA - INFO - 5. TEMPORAL ANALYSIS
+2026-02-19 19:14:10,531 - FraudEDA - INFO - [CHECKPOINT] Loaded 'temporal_analysis' from eda_checkpoints\temporal_analysis.joblib
+2026-02-19 19:14:14,838 - FraudEDA - INFO - 6. CORRELATION & MULTICOLLINEARITY ANALYSIS
+2026-02-19 19:14:14,850 - FraudEDA - INFO - [CHECKPOINT] Loaded 'correlation_analysis' from eda_checkpoints\correlation_analysis.joblib
+2026-02-19 19:14:14,850 - FraudEDA - INFO - 7. FEATURE IMPORTANCE ANALYSIS
+2026-02-19 19:14:14,861 - FraudEDA - INFO - [CHECKPOINT] Loaded 'feature_importance' from eda_checkpoints\feature_importance.joblib
+2026-02-19 19:14:14,861 - FraudEDA - INFO - 8. DIMENSIONALITY REDUCTION (PCA)
+2026-02-19 19:14:14,875 - FraudEDA - INFO - [CHECKPOINT] Loaded 'pca_analysis' from eda_checkpoints\pca_analysis.joblib
+2026-02-19 19:14:14,876 - FraudEDA - INFO - 9. CLUSTERING ANALYSIS
+2026-02-19 19:14:14,888 - FraudEDA - INFO - [CHECKPOINT] Loaded 'clustering_analysis' from eda_checkpoints\clustering_analysis.joblib
+2026-02-19 19:14:14,889 - FraudEDA - INFO - 10. STATISTICAL HYPOTHESIS TESTS
+2026-02-19 19:14:26,327 - FraudEDA - INFO - [CHECKPOINT] Saved 'statistical_tests' -> eda_checkpoints\statistical_tests.joblib
+2026-02-19 19:14:26,327 - FraudEDA - INFO - Completed 10 chi-square tests
+2026-02-19 19:14:26,327 - FraudEDA - INFO - 11. MODEL READINESS ASSESSMENT
+2026-02-19 19:14:28,148 - FraudEDA - INFO - [CHECKPOINT] Saved 'model_readiness' -> eda_checkpoints\model_readiness.joblib
+2026-02-19 19:14:28,148 - FraudEDA - INFO - Model readiness: READY
+2026-02-19 19:14:28,148 - FraudEDA - INFO - 12. RECOMMENDATIONS & ACTION ITEMS
+2026-02-19 19:14:28,155 - FraudEDA - INFO - [CHECKPOINT] Saved 'recommendations' -> eda_checkpoints\recommendations.joblib
+2026-02-19 19:14:28,155 - FraudEDA - INFO - Generated 3 recommendations
+2026-02-19 19:14:28,156 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:14:28,156 - FraudEDA - INFO - EDA PIPELINE COMPLETED SUCCESSFULLY
+2026-02-19 19:14:28,156 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:14:28,166 - FraudEDA - INFO - Results saved to: eda_results.joblib (36.15 KB)
+2026-02-19 19:19:57,536 - FraudEDA - INFO - FraudEDA pipeline initialized
+2026-02-19 19:19:57,536 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:19:57,536 - FraudEDA - INFO - STARTING COMPREHENSIVE EDA PIPELINE
+2026-02-19 19:19:57,536 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:19:57,537 - FraudEDA - INFO - File found: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:19:57,537 - FraudEDA - INFO - Loading data from: Dataset/financial_fraud_detection_dataset.csv
+2026-02-19 19:20:10,877 - FraudEDA - INFO - DataFrame validated: 5,000,000 rows Ã— 18 cols
+2026-02-19 19:20:11,605 - FraudEDA - INFO - [LEAKAGE GUARD] Dropped post-event columns on load: ['fraud_type']
+2026-02-19 19:20:11,606 - FraudEDA - INFO - Data loaded: 5,000,000 rows Ã— 17 cols
+2026-02-19 19:20:11,606 - FraudEDA - INFO - 1. DATASET METADATA & PROFILING
+2026-02-19 19:20:11,608 - FraudEDA - INFO - [CHECKPOINT] Loaded 'metadata' from eda_checkpoints\metadata.joblib
+2026-02-19 19:20:11,609 - FraudEDA - INFO - 2. DATA QUALITY ASSESSMENT
+2026-02-19 19:20:11,610 - FraudEDA - INFO - [CHECKPOINT] Loaded 'data_quality' from eda_checkpoints\data_quality.joblib
+2026-02-19 19:20:11,610 - FraudEDA - INFO - 3. NUMERICAL FEATURES ANALYSIS
+2026-02-19 19:20:11,611 - FraudEDA - INFO - [CHECKPOINT] Loaded 'numerical_analysis' from eda_checkpoints\numerical_analysis.joblib
+2026-02-19 19:20:11,611 - FraudEDA - INFO - 4. CATEGORICAL FEATURES ANALYSIS
+2026-02-19 19:20:11,612 - FraudEDA - INFO - [CHECKPOINT] Loaded 'categorical_analysis' from eda_checkpoints\categorical_analysis.joblib
+2026-02-19 19:20:11,613 - FraudEDA - INFO - 5. TEMPORAL ANALYSIS
+2026-02-19 19:20:11,613 - FraudEDA - INFO - [CHECKPOINT] Loaded 'temporal_analysis' from eda_checkpoints\temporal_analysis.joblib
+2026-02-19 19:20:15,502 - FraudEDA - INFO - 6. CORRELATION & MULTICOLLINEARITY ANALYSIS
+2026-02-19 19:20:15,503 - FraudEDA - INFO - [CHECKPOINT] Loaded 'correlation_analysis' from eda_checkpoints\correlation_analysis.joblib
+2026-02-19 19:20:15,504 - FraudEDA - INFO - 7. FEATURE IMPORTANCE ANALYSIS
+2026-02-19 19:20:15,505 - FraudEDA - INFO - [CHECKPOINT] Loaded 'feature_importance' from eda_checkpoints\feature_importance.joblib
+2026-02-19 19:20:15,505 - FraudEDA - INFO - 8. DIMENSIONALITY REDUCTION (PCA)
+2026-02-19 19:20:15,508 - FraudEDA - INFO - [CHECKPOINT] Loaded 'pca_analysis' from eda_checkpoints\pca_analysis.joblib
+2026-02-19 19:20:15,508 - FraudEDA - INFO - 9. CLUSTERING ANALYSIS
+2026-02-19 19:20:15,509 - FraudEDA - INFO - [CHECKPOINT] Loaded 'clustering_analysis' from eda_checkpoints\clustering_analysis.joblib
+2026-02-19 19:20:15,509 - FraudEDA - INFO - 10. STATISTICAL HYPOTHESIS TESTS
+2026-02-19 19:20:15,522 - FraudEDA - INFO - [CHECKPOINT] Loaded 'statistical_tests' from eda_checkpoints\statistical_tests.joblib
+2026-02-19 19:20:15,522 - FraudEDA - INFO - 11. MODEL READINESS ASSESSMENT
+2026-02-19 19:20:15,535 - FraudEDA - INFO - [CHECKPOINT] Loaded 'model_readiness' from eda_checkpoints\model_readiness.joblib
+2026-02-19 19:20:15,535 - FraudEDA - INFO - 12. RECOMMENDATIONS & ACTION ITEMS
+2026-02-19 19:20:15,544 - FraudEDA - INFO - [CHECKPOINT] Loaded 'recommendations' from eda_checkpoints\recommendations.joblib
+2026-02-19 19:20:15,544 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:20:15,544 - FraudEDA - INFO - EDA PIPELINE COMPLETED SUCCESSFULLY
+2026-02-19 19:20:15,544 - FraudEDA - INFO - ====================================================================================================
+2026-02-19 19:20:15,552 - FraudEDA - INFO - Results saved to: eda_results.joblib (36.15 KB)
