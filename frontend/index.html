@@ -1,0 +1,1691 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DormancyGuard — Fraud Detection</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Syne:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --bg: #080c12;
+        --bg2: #0d1219;
+        --bg3: #111820;
+        --bg4: #161e28;
+        --border: #1e2a38;
+        --border2: #253040;
+        --text: #e8eef5;
+        --text2: #8a9bb0;
+        --text3: #4a5a6a;
+        --accent: #00c896;
+        --accent2: #00a07a;
+        --accent-dim: rgba(0, 200, 150, 0.12);
+        --red: #ff4c5e;
+        --red-dim: rgba(255, 76, 94, 0.12);
+        --amber: #f5a623;
+        --amber-dim: rgba(245, 166, 35, 0.12);
+        --blue: #3d9eff;
+        --blue-dim: rgba(61, 158, 255, 0.1);
+        --font-display: "Syne", sans-serif;
+        --font-mono: "JetBrains Mono", monospace;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 13px;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.025) 2px,
+          rgba(0, 0, 0, 0.025) 4px
+        );
+        pointer-events: none;
+        z-index: 9999;
+      }
+      .app {
+        display: grid;
+        grid-template-rows: 56px 1fr;
+        min-height: 100vh;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        padding: 0 24px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg2);
+        gap: 24px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+      .logo-text {
+        font-family: var(--font-display);
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: var(--text);
+      }
+      .logo-text span {
+        color: var(--accent);
+      }
+      .nav {
+        display: flex;
+        gap: 2px;
+        margin-left: 8px;
+      }
+      .nav-btn {
+        background: none;
+        border: none;
+        padding: 6px 16px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--text3);
+        cursor: pointer;
+        border-radius: 4px;
+        transition: all 0.15s;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        position: relative;
+      }
+      .nav-btn:hover {
+        color: var(--text2);
+        background: var(--bg3);
+      }
+      .nav-btn.active {
+        color: var(--accent);
+        background: var(--accent-dim);
+      }
+      .nav-btn.active::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 16px;
+        right: 16px;
+        height: 1px;
+        background: var(--accent);
+      }
+      .topbar-right {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 8px var(--accent);
+        animation: pulse 2s ease-in-out infinite;
+        flex-shrink: 0;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .status-label {
+        font-size: 11px;
+        color: var(--text3);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .clock {
+        font-size: 12px;
+        color: var(--text3);
+        letter-spacing: 0.04em;
+        min-width: 80px;
+        text-align: right;
+      }
+      .page {
+        display: none;
+        padding: 24px;
+        max-width: 1400px;
+        margin: 0 auto;
+        width: 100%;
+      }
+      .page.active {
+        display: block;
+      }
+      .analyze-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        align-items: start;
+      }
+      @media (max-width: 900px) {
+        .analyze-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .panel {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 18px;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg3);
+      }
+      .panel-title {
+        font-family: var(--font-display);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text2);
+      }
+      .panel-badge {
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 3px;
+      }
+      .panel-body {
+        padding: 18px;
+      }
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 560px) {
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .field.full {
+        grid-column: 1/-1;
+      }
+      .field label {
+        font-size: 10px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--text3);
+      }
+      .field input,
+      .field select {
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: 5px;
+        padding: 9px 12px;
+        font-family: var(--font-mono);
+        font-size: 13px;
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.15s;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      .field input::placeholder {
+        color: var(--text3);
+      }
+      .field input:focus,
+      .field select:focus {
+        border-color: var(--accent);
+      }
+      .field select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%234A5A6A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 32px;
+      }
+      .field .hint {
+        font-size: 10px;
+        color: var(--text3);
+      }
+      .analyze-btn {
+        width: 100%;
+        margin-top: 6px;
+        padding: 12px;
+        background: var(--accent);
+        border: none;
+        border-radius: 5px;
+        font-family: var(--font-display);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #000;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .analyze-btn:hover {
+        background: var(--accent2);
+        transform: translateY(-1px);
+      }
+      .analyze-btn:active {
+        transform: translateY(0);
+      }
+      .analyze-btn:disabled {
+        background: var(--border2);
+        color: var(--text3);
+        cursor: not-allowed;
+        transform: none;
+      }
+      .analyze-btn .bi {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+      .spinner {
+        width: 14px;
+        height: 14px;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        border-top-color: #000;
+        border-radius: 50%;
+        animation: spin 0.7s linear infinite;
+        display: none;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .result-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 24px;
+        gap: 14px;
+        text-align: center;
+      }
+      .result-empty svg {
+        opacity: 0.4;
+      }
+      .result-empty p {
+        color: var(--text3);
+        font-size: 12px;
+        line-height: 1.8;
+        max-width: 240px;
+      }
+      .result-content {
+        display: none;
+      }
+      .result-content.show {
+        display: block;
+      }
+      .gauge-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0 4px;
+      }
+      .gauge-svg {
+        width: 200px;
+        height: 112px;
+      }
+      .gauge-pct {
+        font-family: var(--font-display);
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        line-height: 1;
+        text-align: center;
+        margin-top: 6px;
+      }
+      .gauge-sub {
+        font-size: 10px;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        text-align: center;
+        margin-top: 3px;
+      }
+      .risk-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 4px;
+        font-family: var(--font-display);
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-top: 12px;
+      }
+      .risk-badge .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+      .risk-badge.high {
+        background: var(--red-dim);
+        color: var(--red);
+        border: 1px solid rgba(255, 76, 94, 0.25);
+      }
+      .risk-badge.medium {
+        background: var(--amber-dim);
+        color: var(--amber);
+        border: 1px solid rgba(245, 166, 35, 0.25);
+      }
+      .risk-badge.low {
+        background: var(--accent-dim);
+        color: var(--accent);
+        border: 1px solid rgba(0, 200, 150, 0.25);
+      }
+      .meta-row {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--border);
+        border-top: 1px solid var(--border);
+      }
+      .meta-cell {
+        background: var(--bg2);
+        padding: 10px 14px;
+        text-align: center;
+      }
+      .meta-val {
+        font-family: var(--font-display);
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .meta-key {
+        font-size: 9px;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+      .factors-section {
+        padding: 14px 18px 6px;
+      }
+      .factors-label {
+        font-size: 10px;
+        color: var(--text3);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+      }
+      .factors-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 0 18px 14px;
+      }
+      .factor {
+        display: grid;
+        grid-template-columns: 1fr 72px;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 12px;
+        background: var(--bg3);
+        border-radius: 5px;
+        border-left: 2px solid transparent;
+      }
+      .factor.high {
+        border-left-color: var(--red);
+      }
+      .factor.medium {
+        border-left-color: var(--amber);
+      }
+      .factor.low {
+        border-left-color: var(--accent);
+      }
+      .factor-label {
+        font-size: 12px;
+        color: var(--text);
+        font-weight: 500;
+      }
+      .factor-detail {
+        font-size: 10px;
+        color: var(--text3);
+        margin-top: 2px;
+        line-height: 1.5;
+      }
+      .factor-bar {
+        height: 4px;
+        background: var(--bg4);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+      .factor-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .factor.high .factor-fill {
+        background: var(--red);
+      }
+      .factor.medium .factor-fill {
+        background: var(--amber);
+      }
+      .factor.low .factor-fill {
+        background: var(--accent);
+      }
+      .action-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 8px;
+        padding: 8px 18px 18px;
+      }
+      .action-btn {
+        padding: 9px 8px;
+        border-radius: 5px;
+        border: 1px solid;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.15s;
+        font-weight: 500;
+      }
+      .action-btn.block {
+        background: var(--red-dim);
+        border-color: rgba(255, 76, 94, 0.3);
+        color: var(--red);
+      }
+      .action-btn.block:hover {
+        background: rgba(255, 76, 94, 0.2);
+      }
+      .action-btn.review {
+        background: var(--amber-dim);
+        border-color: rgba(245, 166, 35, 0.3);
+        color: var(--amber);
+      }
+      .action-btn.review:hover {
+        background: rgba(245, 166, 35, 0.2);
+      }
+      .action-btn.approve {
+        background: var(--accent-dim);
+        border-color: rgba(0, 200, 150, 0.3);
+        color: var(--accent);
+      }
+      .action-btn.approve:hover {
+        background: rgba(0, 200, 150, 0.2);
+      }
+      .dash-stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      @media (max-width: 700px) {
+        .dash-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      .stat-card {
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .stat-val {
+        font-family: var(--font-display);
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .stat-key {
+        font-size: 10px;
+        color: var(--text3);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-top: 4px;
+      }
+      .stat-card.d .stat-val {
+        color: var(--red);
+      }
+      .stat-card.w .stat-val {
+        color: var(--amber);
+      }
+      .stat-card.s .stat-val {
+        color: var(--accent);
+      }
+      .dash-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 900px) {
+        .dash-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .chart-wrap {
+        position: relative;
+        height: 200px;
+      }
+      .hist-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+      }
+      .hist-table th {
+        padding: 8px 12px;
+        text-align: left;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text3);
+        border-bottom: 1px solid var(--border);
+        font-weight: 500;
+      }
+      .hist-table td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--border);
+        color: var(--text2);
+      }
+      .hist-table tr:last-child td {
+        border-bottom: none;
+      }
+      .hist-table tr:hover td {
+        background: var(--bg3);
+        color: var(--text);
+      }
+      .pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 3px;
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+      .pill.high {
+        background: var(--red-dim);
+        color: var(--red);
+      }
+      .pill.medium {
+        background: var(--amber-dim);
+        color: var(--amber);
+      }
+      .pill.low {
+        background: var(--accent-dim);
+        color: var(--accent);
+      }
+      .empty-msg {
+        padding: 32px;
+        text-align: center;
+        color: var(--text3);
+        font-size: 12px;
+      }
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      @media (max-width: 700px) {
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      .kv-list {
+        display: flex;
+        flex-direction: column;
+      }
+      .kv {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        gap: 12px;
+      }
+      .kv:last-child {
+        border-bottom: none;
+      }
+      .kv-k {
+        font-size: 11px;
+        color: var(--text3);
+        letter-spacing: 0.04em;
+        flex-shrink: 0;
+      }
+      .kv-v {
+        font-size: 12px;
+        color: var(--text);
+        text-align: right;
+        font-weight: 500;
+      }
+      .kv-v.a {
+        color: var(--accent);
+      }
+      .kv-v.r {
+        color: var(--red);
+      }
+      .kv-v.w {
+        color: var(--amber);
+      }
+      .band {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .band:last-child {
+        border-bottom: none;
+      }
+      .band-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+      .band-info {
+        flex: 1;
+      }
+      .band-name {
+        font-size: 12px;
+        font-weight: 500;
+      }
+      .band-range {
+        font-size: 10px;
+        color: var(--text3);
+        margin-top: 2px;
+      }
+      .band-act {
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+      }
+      .fchip {
+        display: inline-block;
+        padding: 4px 10px;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: 4px;
+        font-size: 11px;
+        color: var(--text2);
+        margin: 3px;
+        letter-spacing: 0.03em;
+      }
+      .fchip.p {
+        border-color: rgba(0, 200, 150, 0.3);
+        color: var(--accent);
+        background: var(--accent-dim);
+      }
+      .fwrap {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 4px 0;
+      }
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        background: var(--bg3);
+        border: 1px solid var(--border2);
+        border-radius: 6px;
+        padding: 12px 16px;
+        font-size: 12px;
+        color: var(--text);
+        z-index: 9998;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.25s;
+        pointer-events: none;
+        max-width: 300px;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .toast.err {
+        border-color: rgba(255, 76, 94, 0.4);
+      }
+      .toast.ok {
+        border-color: rgba(0, 200, 150, 0.4);
+      }
+      ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border2);
+        border-radius: 2px;
+      }
+      @media (max-width: 600px) {
+        .nav-btn {
+          padding: 6px 10px;
+          font-size: 10px;
+        }
+        .topbar {
+          padding: 0 14px;
+          gap: 10px;
+        }
+        .page {
+          padding: 14px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="logo">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <rect width="28" height="28" rx="6" fill="#0D1219" />
+            <path
+              d="M14 4L22 8V14C22 18.4 18.4 22.4 14 24C9.6 22.4 6 18.4 6 14V8L14 4Z"
+              stroke="#00C896"
+              stroke-width="1.5"
+              fill="none"
+            />
+            <path
+              d="M10 14l3 3 5-5"
+              stroke="#00C896"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="logo-text">Dormancy<span>Guard</span></span>
+        </div>
+        <nav class="nav">
+          <button class="nav-btn active" onclick="showPage('analyze', this)">
+            Analyze
+          </button>
+          <button class="nav-btn" onclick="showPage('dashboard', this)">
+            Dashboard
+          </button>
+          <button class="nav-btn" onclick="showPage('model', this)">
+            Model
+          </button>
+        </nav>
+        <div class="topbar-right">
+          <div class="status-dot" id="sDot"></div>
+          <span class="status-label" id="sLabel">System Online</span>
+          <span class="clock" id="clock"></span>
+        </div>
+      </header>
+
+      <main>
+        <!-- ANALYZE -->
+        <div class="page active" id="page-analyze">
+          <div class="analyze-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Transaction Input</span>
+                <span
+                  class="panel-badge"
+                  style="
+                    background: var(--blue-dim);
+                    color: var(--blue);
+                    border: 1px solid rgba(61, 158, 255, 0.2);
+                  "
+                  >Live</span
+                >
+              </div>
+              <div class="panel-body">
+                <div class="form-grid">
+                  <div class="field">
+                    <label>Amount (USD)</label
+                    ><input
+                      type="number"
+                      id="f_amount"
+                      value="847.50"
+                      step="0.01"
+                      min="0"
+                      placeholder="0.00"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Transaction Type</label>
+                    <select id="f_type">
+                      <option value="transfer">Transfer</option>
+                      <option value="withdrawal">Withdrawal</option>
+                      <option value="payment">Payment</option>
+                      <option value="deposit">Deposit</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Hour of Day (0–23)</label
+                    ><input
+                      type="number"
+                      id="f_hour"
+                      value="2"
+                      min="0"
+                      max="23"
+                    />
+                  </div>
+                  <div class="field">
+                    <label>Days Since Last Txn</label
+                    ><input
+                      type="number"
+                      id="f_days"
+                      value="210"
+                      min="0"
+                      placeholder="blank = first ever"
+                    /><span class="hint"
+                      >Leave blank → first-ever transaction flag</span
+                    >
+                  </div>
+                  <div class="field">
+                    <label>Merchant Category</label>
+                    <select id="f_merch">
+                      <option value="electronics">Electronics</option>
+                      <option value="food">Food</option>
+                      <option value="travel">Travel</option>
+                      <option value="retail">Retail</option>
+                      <option value="gambling">Gambling</option>
+                      <option value="crypto">Crypto</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Payment Channel</label>
+                    <select id="f_channel">
+                      <option value="online">Online</option>
+                      <option value="pos">POS</option>
+                      <option value="atm">ATM</option>
+                      <option value="mobile">Mobile</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Device</label>
+                    <select id="f_device">
+                      <option value="mobile">Mobile</option>
+                      <option value="desktop">Desktop</option>
+                      <option value="tablet">Tablet</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>Location</label
+                    ><input
+                      type="text"
+                      id="f_loc"
+                      value="New York"
+                      placeholder="City, Country"
+                    />
+                  </div>
+                  <div class="field full">
+                    <label>Sender Account ID</label
+                    ><input
+                      type="text"
+                      id="f_acct"
+                      value="ACC-67890"
+                      placeholder="ACC-XXXXX"
+                    />
+                  </div>
+                </div>
+                <div style="margin-top: 16px">
+                  <button
+                    class="analyze-btn"
+                    id="runBtn"
+                    onclick="runAnalysis()"
+                  >
+                    <span class="bi"
+                      ><div class="spinner" id="spin"></div>
+                      <span id="btnTxt">Run Analysis</span></span
+                    >
+                  </button>
+                </div>
+                <div
+                  style="
+                    margin-top: 12px;
+                    padding: 10px 12px;
+                    background: var(--bg3);
+                    border-radius: 5px;
+                    border-left: 2px solid var(--blue);
+                  "
+                >
+                  <div
+                    style="
+                      font-size: 10px;
+                      color: var(--text3);
+                      letter-spacing: 0.06em;
+                      text-transform: uppercase;
+                      margin-bottom: 5px;
+                    "
+                  >
+                    Auto-computed server-side
+                  </div>
+                  <div style="font-size: 11px; color: var(--text3)">
+                    spending_deviation &bull; velocity_score &bull; geo_anomaly
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Risk Assessment</span>
+                <span
+                  class="panel-badge"
+                  id="miniBadge"
+                  style="
+                    background: var(--bg4);
+                    color: var(--text3);
+                    border: 1px solid var(--border2);
+                  "
+                  >Awaiting input</span
+                >
+              </div>
+              <div class="result-empty" id="rEmpty">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                  <circle
+                    cx="22"
+                    cy="22"
+                    r="20"
+                    stroke="#4A5A6A"
+                    stroke-width="1"
+                  />
+                  <path
+                    d="M22 13v10M22 29h.01"
+                    stroke="#4A5A6A"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                <p>
+                  Fill in the transaction details and run the analysis to
+                  receive a fraud risk assessment.
+                </p>
+              </div>
+              <div class="result-content" id="rContent">
+                <div class="gauge-wrap">
+                  <svg class="gauge-svg" viewBox="0 0 200 112">
+                    <defs>
+                      <linearGradient id="gg" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00C896" />
+                        <stop offset="50%" stop-color="#F5A623" />
+                        <stop offset="100%" stop-color="#FF4C5E" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M20 95A80 80 0 0 1 180 95"
+                      fill="none"
+                      stroke="#1E2A38"
+                      stroke-width="12"
+                      stroke-linecap="round"
+                    />
+                    <path
+                      id="gFill"
+                      d="M20 95A80 80 0 0 1 180 95"
+                      fill="none"
+                      stroke="url(#gg)"
+                      stroke-width="12"
+                      stroke-linecap="round"
+                      stroke-dasharray="251.2"
+                      stroke-dashoffset="251.2"
+                    />
+                    <g id="gNeedle" transform="rotate(-90,100,95)">
+                      <line
+                        x1="100"
+                        y1="95"
+                        x2="100"
+                        y2="30"
+                        stroke="#E8EEF5"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        opacity="0.9"
+                      />
+                      <circle
+                        cx="100"
+                        cy="95"
+                        r="5"
+                        fill="#1E2A38"
+                        stroke="#E8EEF5"
+                        stroke-width="1.5"
+                      />
+                    </g>
+                    <text
+                      x="18"
+                      y="112"
+                      fill="#4A5A6A"
+                      font-size="9"
+                      font-family="JetBrains Mono"
+                    >
+                      LOW
+                    </text>
+                    <text
+                      x="100"
+                      y="16"
+                      fill="#4A5A6A"
+                      font-size="9"
+                      font-family="JetBrains Mono"
+                      text-anchor="middle"
+                    >
+                      MED
+                    </text>
+                    <text
+                      x="182"
+                      y="112"
+                      fill="#4A5A6A"
+                      font-size="9"
+                      font-family="JetBrains Mono"
+                      text-anchor="end"
+                    >
+                      HIGH
+                    </text>
+                  </svg>
+                  <div class="gauge-pct" id="gPct">--</div>
+                  <div class="gauge-sub">fraud probability</div>
+                  <div class="risk-badge low" id="rBadge">
+                    <span class="dot"></span><span id="rTxt">--</span>
+                  </div>
+                </div>
+                <div class="meta-row">
+                  <div class="meta-cell">
+                    <div class="meta-val" id="mDorm">--</div>
+                    <div class="meta-key">Dormancy</div>
+                  </div>
+                  <div class="meta-cell">
+                    <div class="meta-val" id="mDec">--</div>
+                    <div class="meta-key">Decision</div>
+                  </div>
+                  <div class="meta-cell">
+                    <div class="meta-val" id="mMs">--</div>
+                    <div class="meta-key">Inference</div>
+                  </div>
+                </div>
+                <div class="factors-section">
+                  <div class="factors-label">Risk Factors</div>
+                </div>
+                <div class="factors-list" id="fList"></div>
+                <div class="action-row">
+                  <button class="action-btn block" onclick="doAction('Block')">
+                    Block
+                  </button>
+                  <button
+                    class="action-btn review"
+                    onclick="doAction('Review')"
+                  >
+                    Review
+                  </button>
+                  <button
+                    class="action-btn approve"
+                    onclick="doAction('Approve')"
+                  >
+                    Approve
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div class="page" id="page-dashboard">
+          <div class="dash-stats">
+            <div class="stat-card">
+              <div class="stat-val" id="dTotal">0</div>
+              <div class="stat-key">Total Predictions</div>
+            </div>
+            <div class="stat-card d">
+              <div class="stat-val" id="dHigh">0</div>
+              <div class="stat-key">High Risk</div>
+            </div>
+            <div class="stat-card w">
+              <div class="stat-val" id="dMed">0</div>
+              <div class="stat-key">Medium Risk</div>
+            </div>
+            <div class="stat-card s">
+              <div class="stat-val" id="dAvg">0%</div>
+              <div class="stat-key">Avg Probability</div>
+            </div>
+          </div>
+          <div class="dash-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Risk Distribution</span>
+              </div>
+              <div class="panel-body">
+                <div class="chart-wrap"><canvas id="cDist"></canvas></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Probability Trend</span>
+              </div>
+              <div class="panel-body">
+                <div class="chart-wrap"><canvas id="cTrend"></canvas></div>
+              </div>
+            </div>
+          </div>
+          <div class="panel" style="margin-top: 20px">
+            <div class="panel-header">
+              <span class="panel-title">Prediction History</span
+              ><span style="font-size: 11px; color: var(--text3)" id="histCnt"
+                >0 records</span
+              >
+            </div>
+            <div id="histWrap">
+              <div class="empty-msg">
+                No predictions yet — run an analysis first.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODEL INFO -->
+        <div class="page" id="page-model">
+          <div class="info-grid">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title">Model Metadata</span>
+              </div>
+              <div class="panel-body">
+                <div class="kv-list">
+                  <div class="kv">
+                    <span class="kv-k">Model Name</span
+                    ><span class="kv-v a">XGBoost v2</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Algorithm</span
+                    ><span class="kv-v">XGBClassifier</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Dataset</span
+                    ><span class="kv-v">5,000,000 transactions</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Fraud Rate</span
+                    ><span class="kv-v">3.59% (179,615 cases)</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Time Span</span
+                    ><span class="kv-v">2023-01-01 → 2024-01-01</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Train / Test</span
+                    ><span class="kv-v">80 / 20% chronological</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">scale_pos_weight</span
+                    ><span class="kv-v">26.87</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">PR-AUC</span
+                    ><span class="kv-v w">0.044 (dataset limit)</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Recall</span
+                    ><span class="kv-v a">0.998</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Active Scorer</span
+                    ><span class="kv-v a">Rule-based (EDA-grounded)</span>
+                  </div>
+                  <div class="kv">
+                    <span class="kv-k">Unit Tests</span
+                    ><span class="kv-v a">518 / 518 passing</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="panel" style="margin-bottom: 20px">
+                <div class="panel-header">
+                  <span class="panel-title">Risk Bands</span>
+                </div>
+                <div class="panel-body">
+                  <div class="band">
+                    <div
+                      class="band-dot"
+                      style="background: var(--accent)"
+                    ></div>
+                    <div class="band-info">
+                      <div class="band-name">Low Risk</div>
+                      <div class="band-range">0 – 39%</div>
+                    </div>
+                    <span class="band-act" style="color: var(--accent)"
+                      >Approve</span
+                    >
+                  </div>
+                  <div class="band">
+                    <div
+                      class="band-dot"
+                      style="background: var(--amber)"
+                    ></div>
+                    <div class="band-info">
+                      <div class="band-name">Medium Risk</div>
+                      <div class="band-range">40 – 64%</div>
+                    </div>
+                    <span class="band-act" style="color: var(--amber)"
+                      >Review</span
+                    >
+                  </div>
+                  <div class="band">
+                    <div class="band-dot" style="background: var(--red)"></div>
+                    <div class="band-info">
+                      <div class="band-name">High Risk</div>
+                      <div class="band-range">65 – 100%</div>
+                    </div>
+                    <span class="band-act" style="color: var(--red)"
+                      >Block</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="panel">
+                <div class="panel-header">
+                  <span class="panel-title">Hypothesis Targets</span>
+                </div>
+                <div class="panel-body">
+                  <div class="kv-list">
+                    <div class="kv">
+                      <span class="kv-k">FPR Reduction Target</span
+                      ><span class="kv-v w">≥ 15%</span>
+                    </div>
+                    <div class="kv">
+                      <span class="kv-k">Recall Target</span
+                      ><span class="kv-v w">&gt; 90%</span>
+                    </div>
+                    <div class="kv">
+                      <span class="kv-k">dormancy_x_hour sep.</span
+                      ><span class="kv-v a">3.45 (15× strongest)</span>
+                    </div>
+                    <div class="kv">
+                      <span class="kv-k">Dataset Limitation</span
+                      ><span class="kv-v r">Random synthetic labels</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel" style="grid-column: 1/-1">
+              <div class="panel-header">
+                <span class="panel-title">Feature Set — 23 Features</span>
+              </div>
+              <div class="panel-body">
+                <div class="fwrap">
+                  <span class="fchip p">time_since_last_transaction</span
+                  ><span class="fchip p">dormancy_risk_score</span
+                  ><span class="fchip p">is_first_transaction</span
+                  ><span class="fchip p">dormancy_x_hour</span
+                  ><span class="fchip p">dormancy_bucket_enc</span>
+                  <span class="fchip">amount</span
+                  ><span class="fchip">amount_log</span
+                  ><span class="fchip">hour</span
+                  ><span class="fchip">day_of_week</span
+                  ><span class="fchip">month</span
+                  ><span class="fchip">is_weekend</span
+                  ><span class="fchip">is_high_risk_hour</span>
+                  <span class="fchip">spending_deviation_score</span
+                  ><span class="fchip">velocity_score</span
+                  ><span class="fchip">geo_anomaly_score</span
+                  ><span class="fchip">sender_account_freq</span
+                  ><span class="fchip">receiver_account_freq</span>
+                  <span class="fchip">device_hash_freq</span
+                  ><span class="fchip">ip_freq</span
+                  ><span class="fchip">transaction_type_enc</span
+                  ><span class="fchip">merchant_category_enc</span
+                  ><span class="fchip">location_enc</span
+                  ><span class="fchip">payment_channel_enc</span>
+                </div>
+                <div
+                  style="margin-top: 10px; font-size: 10px; color: var(--text3)"
+                >
+                  Teal = primary dormancy signals (RF importance &gt;0.05)
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <script>
+      const API = "http://localhost:5000";
+      let session = [];
+      let cDist = null,
+        cTrend = null;
+
+      // Clock
+      function tick() {
+        document.getElementById("clock").textContent =
+          new Date().toLocaleTimeString("en-US", {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false,
+          });
+      }
+      setInterval(tick, 1000);
+      tick();
+
+      // Nav
+      function showPage(id, btn) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("page-" + id).classList.add("active");
+        btn.classList.add("active");
+        if (id === "dashboard") refreshDash();
+      }
+
+      // Gauge
+      function setGauge(pct) {
+        const total = 251.2;
+        document.getElementById("gFill").style.cssText =
+          "transition:stroke-dashoffset 0.8s cubic-bezier(0.4,0,0.2,1);stroke-dasharray:251.2;stroke-dashoffset:" +
+          (total - (pct / 100) * total);
+        const angle = -90 + (pct / 100) * 180;
+        document.getElementById("gNeedle").style.cssText =
+          "transition:transform 0.8s cubic-bezier(0.4,0,0.2,1)";
+        document
+          .getElementById("gNeedle")
+          .setAttribute("transform", `rotate(${angle},100,95)`);
+      }
+
+      // Run analysis
+      async function runAnalysis() {
+        const btn = document.getElementById("runBtn");
+        const sp = document.getElementById("spin");
+        const bt = document.getElementById("btnTxt");
+        btn.disabled = true;
+        sp.style.display = "block";
+        bt.textContent = "Analyzing...";
+        const days = document.getElementById("f_days").value;
+        const payload = {
+          amount: parseFloat(document.getElementById("f_amount").value) || 0,
+          transaction_type: document.getElementById("f_type").value,
+          hour: parseInt(document.getElementById("f_hour").value) || 0,
+          merchant_category: document.getElementById("f_merch").value,
+          payment_channel: document.getElementById("f_channel").value,
+          device_used: document.getElementById("f_device").value,
+          location: document.getElementById("f_loc").value || "Unknown",
+          sender_account: document.getElementById("f_acct").value || "ACC_DEMO",
+        };
+        if (days !== "") payload.days_since_last = parseFloat(days);
+        try {
+          const res = await fetch(`${API}/predict`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          const data = await res.json();
+          renderResult(data);
+          session.push({
+            ...data,
+            amount: payload.amount,
+            transaction_type: payload.transaction_type,
+          });
+        } catch (e) {
+          showToast("Server error — run: python src/app.py", "err");
+        } finally {
+          btn.disabled = false;
+          sp.style.display = "none";
+          bt.textContent = "Run Analysis";
+        }
+      }
+
+      function renderResult(d) {
+        document.getElementById("rEmpty").style.display = "none";
+        document.getElementById("rContent").classList.add("show");
+        const pct = d.fraud_probability_pct;
+        const lvl = d.risk_level;
+        const cmap = {
+          high: "var(--red)",
+          medium: "var(--amber)",
+          low: "var(--accent)",
+        };
+        setGauge(pct);
+        const gp = document.getElementById("gPct");
+        gp.textContent = pct.toFixed(1) + "%";
+        gp.style.color = cmap[lvl];
+        const rb = document.getElementById("rBadge");
+        rb.className = "risk-badge " + lvl;
+        document.getElementById("rTxt").textContent =
+          lvl.toUpperCase() + " RISK";
+        const mb = document.getElementById("miniBadge");
+        mb.textContent = lvl.toUpperCase();
+        mb.style.cssText = `background:var(--${lvl === "high" ? "red" : lvl === "medium" ? "amber" : "accent"}-dim);color:${cmap[lvl]};border:1px solid ${lvl === "high" ? "rgba(255,76,94,0.3)" : lvl === "medium" ? "rgba(245,166,35,0.3)" : "rgba(0,200,150,0.3)"}`;
+        document.getElementById("mDorm").textContent =
+          d.dormancy_bucket || "--";
+        const md = document.getElementById("mDec");
+        md.textContent = d.decision;
+        md.style.color =
+          {
+            Block: "var(--red)",
+            Review: "var(--amber)",
+            Approve: "var(--accent)",
+          }[d.decision] || "var(--text)";
+        document.getElementById("mMs").textContent = d.inference_ms + "ms";
+        const fl = document.getElementById("fList");
+        fl.innerHTML = "";
+        const bw = { high: 90, medium: 55, low: 20 };
+        (d.risk_factors || []).forEach((f) => {
+          const fw = bw[f.level] || 20;
+          const div = document.createElement("div");
+          div.className = "factor " + f.level;
+          div.innerHTML = `<div><div class="factor-label">${f.label}</div><div class="factor-detail">${f.detail}</div></div><div class="factor-bar"><div class="factor-fill" style="width:0%"></div></div>`;
+          fl.appendChild(div);
+          setTimeout(() => {
+            div.querySelector(".factor-fill").style.width = fw + "%";
+          }, 50);
+        });
+      }
+
+      function doAction(a) {
+        showToast("Action: " + a, a === "Block" ? "err" : "ok");
+      }
+
+      function showToast(msg, type) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast " + type + " show";
+        setTimeout(() => t.classList.remove("show"), 3000);
+      }
+
+      // Dashboard
+      function refreshDash() {
+        const n = session.length;
+        const hi = session.filter((s) => s.risk_level === "high").length;
+        const me = session.filter((s) => s.risk_level === "medium").length;
+        const av = n
+          ? (
+              session.reduce((a, s) => a + s.fraud_probability_pct, 0) / n
+            ).toFixed(1)
+          : 0;
+        document.getElementById("dTotal").textContent = n;
+        document.getElementById("dHigh").textContent = hi;
+        document.getElementById("dMed").textContent = me;
+        document.getElementById("dAvg").textContent = av + "%";
+        renderDist();
+        renderTrend();
+        renderHist();
+        document.getElementById("histCnt").textContent =
+          n + " record" + (n !== 1 ? "s" : "");
+      }
+
+      const CJ = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            bodyFont: { family: "JetBrains Mono", size: 11 },
+            titleFont: { family: "JetBrains Mono", size: 11 },
+          },
+        },
+      };
+
+      function renderDist() {
+        const ctx = document.getElementById("cDist").getContext("2d");
+        if (cDist) cDist.destroy();
+        const lo = session.filter((s) => s.risk_level === "low").length;
+        const me = session.filter((s) => s.risk_level === "medium").length;
+        const hi = session.filter((s) => s.risk_level === "high").length;
+        cDist = new Chart(ctx, {
+          type: "doughnut",
+          data: {
+            labels: ["Low", "Medium", "High"],
+            datasets: [
+              {
+                data: [lo, me, hi],
+                backgroundColor: [
+                  "rgba(0,200,150,0.7)",
+                  "rgba(245,166,35,0.7)",
+                  "rgba(255,76,94,0.7)",
+                ],
+                borderColor: ["#00C896", "#F5A623", "#FF4C5E"],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            ...CJ,
+            cutout: "68%",
+            plugins: {
+              ...CJ.plugins,
+              legend: {
+                display: true,
+                position: "bottom",
+                labels: {
+                  color: "#8A9BB0",
+                  font: { family: "JetBrains Mono", size: 10 },
+                  boxWidth: 10,
+                  padding: 14,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      function renderTrend() {
+        const ctx = document.getElementById("cTrend").getContext("2d");
+        if (cTrend) cTrend.destroy();
+        cTrend = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: session.map((_, i) => "#" + (i + 1)),
+            datasets: [
+              {
+                data: session.map((s) => s.fraud_probability_pct),
+                borderColor: "#00C896",
+                backgroundColor: "rgba(0,200,150,0.07)",
+                borderWidth: 1.5,
+                pointRadius: 3,
+                pointBackgroundColor: "#00C896",
+                pointBorderColor: "#080C12",
+                pointBorderWidth: 1.5,
+                fill: true,
+                tension: 0.4,
+              },
+            ],
+          },
+          options: {
+            ...CJ,
+            scales: {
+              x: {
+                ticks: {
+                  color: "#4A5A6A",
+                  font: { family: "JetBrains Mono", size: 10 },
+                },
+                grid: { color: "#1E2A38" },
+              },
+              y: {
+                ticks: {
+                  color: "#4A5A6A",
+                  font: { family: "JetBrains Mono", size: 10 },
+                  callback: (v) => v + "%",
+                },
+                grid: { color: "#1E2A38" },
+                min: 0,
+                max: 100,
+              },
+            },
+          },
+        });
+      }
+
+      function renderHist() {
+        const wrap = document.getElementById("histWrap");
+        if (!session.length) {
+          wrap.innerHTML = '<div class="empty-msg">No predictions yet.</div>';
+          return;
+        }
+        const rows = [...session]
+          .reverse()
+          .slice(0, 20)
+          .map(
+            (s) => `<tr>
+    <td>${s.timestamp || "--"}</td><td>$${parseFloat(s.amount).toFixed(2)}</td>
+    <td>${s.transaction_type || "--"}</td><td>${s.dormancy_bucket || "--"}</td>
+    <td>${(s.fraud_probability_pct || 0).toFixed(1)}%</td>
+    <td><span class="pill ${s.risk_level}">${s.risk_level}</span></td>
+    <td style="color:${s.decision === "Block" ? "var(--red)" : s.decision === "Review" ? "var(--amber)" : "var(--accent)"}">${s.decision}</td>
+  </tr>`,
+          )
+          .join("");
+        wrap.innerHTML = `<div style="overflow-x:auto"><table class="hist-table"><thead><tr><th>Time</th><th>Amount</th><th>Type</th><th>Dormancy</th><th>Prob</th><th>Risk</th><th>Decision</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+      }
+
+      // Health check
+      async function checkHealth() {
+        try {
+          const r = await fetch(`${API}/health`);
+          if (r.ok) {
+            document.getElementById("sDot").style.cssText =
+              "background:var(--accent);box-shadow:0 0 8px var(--accent)";
+            document.getElementById("sLabel").textContent = "System Online";
+          } else throw 0;
+        } catch {
+          document.getElementById("sDot").style.cssText =
+            "background:var(--red);box-shadow:0 0 8px var(--red)";
+          document.getElementById("sLabel").textContent = "Server Offline";
+        }
+      }
+      checkHealth();
+      setInterval(checkHealth, 10000);
+      document.addEventListener("keydown", (e) => {
+        if (
+          e.key === "Enter" &&
+          document.getElementById("page-analyze").classList.contains("active")
+        )
+          runAnalysis();
+      });
+    </script>
+  </body>
+</html>
